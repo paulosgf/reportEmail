@@ -11,4 +11,6 @@ https://accounts.google.com/DisplayUnlockCaptcha
 If your account uses 2fa, e.g. Google-Auth, then access this:
 https://myaccount.google.com/apppasswords
 
-
+Use:
+load reportEmail
+reportemail "User Name" "username@gmail.com" "password"
