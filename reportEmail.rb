@@ -3,12 +3,6 @@
 # Current source: https://github.com/rapid7/metasploit-framework
 ##################################################################
 #
-# It requires Gmail Library:
-# gem install gmail	Or
-# git clone git://github.com/gmailgem/gmail.git
-# cd gmail
-# make install
-#
 
 module Msf
 
@@ -36,10 +30,10 @@ end
 #
 # This method handles the sample command.
 #
-def cmd_reportemail(name, email, password)
+def cmd_reportemail(name, email, password, target)
 time1 = Time.now
 time2 = time1.inspect
-filename = "/root/192.168.0.116.pdf"
+filename = "/root/#{target}.pdf"
 file_content = File.read(filename)
 encoded_content = [file_content].pack("m")	
 
@@ -48,7 +42,7 @@ marker = "AUNIQUEMARKER"
 part1 = <<-END_OF_MESSAGE
 From: #{name} <#{email}>
 To: #{name} <#{email}>
-Subject: New node found - 5
+Subject: New node found - "#{target}"
 Date: #{time2}
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary = #{marker}
@@ -62,7 +56,7 @@ Content-Transfer-Encoding:8bit
 <html>
 <head></head>
 <body>
-<h4>Scan report for new node 5.</h4>
+<h4>Scan report for new node "#{target}".</h4>
 <p></p>
 Happy hacking!
 </body>
@@ -71,9 +65,9 @@ Happy hacking!
 END_OF_MESSAGE
 
 part3 = <<-END_OF_MESSAGE
-Content-Type: multipart/mixed; name = "#{filename}"
+Content-Type: multipart/mixed; name = "#{File.basename(filename)}"
 Content-Transfer-Encoding:base64
-Content-Disposition: attachment; filename = "#{filename}"
+Content-Disposition: attachment; filename = "#{File.basename(filename)}"
 
 #{encoded_content}
 --#{marker}--
