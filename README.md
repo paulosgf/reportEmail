@@ -1,5 +1,5 @@
 # reportEmail
-Ruby plugin for send Metasploit's scan reports attached to email.
+Ruby plugin for send Metasploit's scan reports attached to email (Gmail for default).
 
 It works with my other Metasploit's project to create PDF reports of scans:
 https://github.com/paulosgf/metasploitReportTemplate
@@ -17,4 +17,16 @@ Use:
 
 load reportEmail
 
-reportemail "User Name" "username@gmail.com" "password" "target name or IP"
+reportemail "target name or IP" (without quotation marks)
+
+If the email credentials file doesn't exist yet, then the program prompt you to give them, for example:
+username:
+Jon Doe
+email:
+jondoe@gmail.com
+password:
+foobar
+
+... then it saves on /root/.msf4/plugins/.emailCreds.yaml configuration file, for the next times.
+
+That's it!

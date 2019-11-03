@@ -7,6 +7,7 @@
 module Msf
 
 require 'net/smtp'
+require 'yaml'
 
 class Plugin::ReportEmail < Msf::Plugin
 
@@ -28,20 +29,47 @@ def commands
 }
 end
 #
-# This method handles the sample command.
+# My own unction to get users input on Metasploit
+def getline()
+        return $stdin.readline
+end
 #
-def cmd_reportemail(name, email, password, target)
+# This method handles the reportemail method.
+#
+def cmd_reportemail(target)
 time1 = Time.now
 time2 = time1.inspect
 filename = "/root/#{target}.pdf"
 file_content = File.read(filename)
 encoded_content = [file_content].pack("m")	
-
 marker = "AUNIQUEMARKER"
+credentials = {}
+
+if(File.exist?('/root/.msf4/plugins/.emailCreds.yaml'))
+	credentials = YAML.load(File.open('/root/.msf4/plugins/.emailCreds.yaml').read)
+	username = credentials["username"].chomp
+	email = credentials["email"].chomp
+	password = credentials["password"].chomp
+else
+	print_line("Before use this function, we need create this configuration file...")
+	print_line("username:")
+	credentials["username"] = gets().chomp
+	username = credentials["username"]
+	print_line("email:")
+	credentials["email"] = gets().chomp
+	email = credentials["email"]
+	print_line("password:")
+	credentials["password"] = gets().chomp
+	password = credentials["password"]
+	File.open('/root/.msf4/plugins/.emailCreds.yaml', 'w') { |f| f.puts credentials.to_yaml }
+	print_line(credentials["username"])
+	print_line(credentials["email"])
+	print_line(credentials["password"])
+end
 
 part1 = <<-END_OF_MESSAGE
-From: #{name} <#{email}>
-To: #{name} <#{email}>
+From: #{username} <#{email}>
+To: #{username} <#{email}>
 Subject: New node found - "#{target}"
 Date: #{time2}
 MIME-Version: 1.0
