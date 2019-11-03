@@ -15,15 +15,22 @@ https://myaccount.google.com/apppasswords
 
 Use:
 
-load reportEmail
+mkdir –p $HOME/.msf4/plugins
 
-reportemail "target name or IP" (without quotation marks)
+cp reportEmail.rb $HOME/.msf4/plugins
+
+msf > load reportEmail
+
+msf > reportemail "target name or IP" (without quotation marks)
 
 If the email credentials file doesn't exist yet, then the program prompt you to give them, for example:
+
 username:
 Jon Doe
+
 email:
 jondoe@gmail.com
+
 password:
 foobar
 
