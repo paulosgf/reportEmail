@@ -18,14 +18,14 @@ class Plugin::ReportEmail < Msf::Plugin
 # The dispatcher’s name.
 #
 def name
-"ReportEmail"
+"reportEmail"
 end
 #
 # Returns the hash of commands supported by this dispatcher.
 #
 def commands
 {
-"reportemail" => "An unique command added by the ReportEmail plugin"
+"reportEmail" => "An unique command added by the reportEmail plugin"
 }
 end
 #
@@ -34,9 +34,9 @@ def getline()
         return $stdin.readline
 end
 #
-# This method handles the reportemail method.
+# This method handles the reportEmail method.
 #
-def cmd_reportemail(target)
+def cmd_reportEmail(target)
 time1 = Time.now
 time2 = time1.inspect
 filename = "/root/#{target}.pdf"
@@ -61,7 +61,7 @@ else
 	print_line("password:")
 	credentials["password"] = gets().chomp
 	password = credentials["password"]
-	File.open('/root/.msf4/plugins/.emailCreds.yaml', 'w') { |f| f.puts credentials.to_yaml }
+	File.open('/root/.msf4/plugins/.emailCreds.yaml', 'w', 0600) { |f| f.puts credentials.to_yaml }
 	print_line(credentials["username"])
 	print_line(credentials["email"])
 	print_line(credentials["password"])
@@ -125,8 +125,9 @@ super
 # If this plugin is being loaded in the context of a console application
 # that uses the framework’s console user interface driver, register
 # console dispatcher commands.
+
 add_console_dispatcher(ConsoleCommandDispatcher)
-print_status("ReportEmail plugin loaded.")
+print_status("reportEmail plugin loaded.")
 end
 #
 # The cleanup routine for plugins gives them a chance to undo any actions
@@ -136,13 +137,13 @@ end
 def cleanup
 # If we had previously registered a console dispatcher with the console,
 # deregister it now.
-remove_console_dispatcher('ReportEmail')
+remove_console_dispatcher('reportEmail')
 end
 #
 # This method returns a short, friendly name for the plugin.
 #
 def name
-"reportemail"
+"reportEmail"
 end
 #
 # This method returns a brief description of the plugin.
